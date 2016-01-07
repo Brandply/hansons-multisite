@@ -1,0 +1,196 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<style type="text/css">
+body {
+font-family:Arial sans-serif
+}
+.entrybox3 {
+font-size: 12px;
+width: 100%;
+text-align: center;
+padding-top: 12px;
+padding-bottom: 12px;
+}
+table {
+width:100%;
+border-collapse:collapse;
+}
+table td {
+padding:6px;
+}
+.smallestimate
+{
+font-family:Arial, Sans-Serif;
+font-size: 11px;
+font-weight:bold;
+color:#FFFFFF;
+padding-bottom: 6px;
+padding-right: 6px;
+}
+.entryform {
+font-size: 12px;
+border: 1px solid #666666;
+padding: 2px;
+}
+</style>
+</head>
+<body style="background-color:#336699;">
+<form id="ExternalEstimateForm" action="http://serverweb.hansons.com/hansonsgateway/LeadPost/ExternalLeadPost.aspx?from=stuartsites" method="post">
+<div id="divMain" style="width:300px; margin:auto; height:300px; ">
+<div id="divForm" style="text-align:center;">
+<table style="text-align:left; width:300px;">
+<tr>
+<td style="width:75px;">
+<span id="spName" class="smallestimate">Name:</span>
+</td>
+<td>
+<input id="inptName" name="inptName" class="entryform" />
+</td>
+</tr>
+<tr>
+<td>
+<span id="spEmail" class="smallestimate">Email:</span>
+</td>
+<td>
+<input id="inptEmail" name="inptEmail" class="entryform" />
+</td>
+</tr>
+<tr>
+<td>
+<span id="spPhone" class="smallestimate">Phone:</span>
+</td>
+<td>
+<input id="inptPhone" name="inptPhone" class="entryform" onkeypress="return NumbersOnly(event, 10);"/>
+</td>
+</tr>
+<tr>
+<td>
+<span id="spZipCode" class="smallestimate">Zip Code:</span>
+</td>
+<td>
+<input id="inptZipCode" name="inptZipCode" class="entryform" onkeypress="return NumbersOnly(event, 5);" pattern=".{5,5}" required title="Valid Zip Code Required" />
+</td>
+</tr>
+<tr>
+<td colspan='2' style="text-align:center;">
+<button type="button" style="background-color:#336699; border:none;" onclick="SubmitForm();"><img src="button-submit2.jpg" /></button>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+var errorMessages = [];
+function NumbersOnly(e, maxLength) {
+var retVal = false;
+var key = window.event ? event.keyCode : event.which;
+if (event.keyCode === 8 || event.keyCode === 46 ||
+event.keyCode === 37 || event.keyCode === 39) {
+retVal = true;
+}
+else if (key < 48 || key > 57) {
+}
+else {
+retVal = true;
+}
+if (e.target.value.length + 1 > maxLength) {
+retVal = false;
+}
+return retVal;
+}
+function SubmitForm() {
+if (ValidateForm()) {
+document.getElementById("ExternalEstimateForm").submit();
+}
+}
+function ValidateForm() {
+errorMessages = [];
+var name = document.getElementById("inptName").value;
+var email = document.getElementById("inptEmail").value;
+var phone = document.getElementById("inptPhone").value;
+var zipcode = document.getElementById("inptZipCode").value;
+var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+if (!re.test(email)) {
+errorMessages.push({ element: "inptEmail", label: "spEmail", message: "A valid email address is required." });
+}
+if(name.length == 0 ){
+errorMessages.push({ element: "inptName", label: "spName", message: "A name is required." });
+}
+else if (name.indexOf(" ") == -1 || name.indexOf(" ") == 0) {
+errorMessages.push({ element: "inptName", label: "spName", message: "A first and last name are required." });
+}
+if (phone.indexOf("1") == 0) {
+errorMessages.push({ element: "inptPhone", label: "spPhone", message: "Invalid phone number, number cannot begin with '1'" });
+}
+if (phone.length != 10) {
+if (phone.length > 10) {
+errorMessages.push({ element: "inptPhone", label: "spPhone", message: "Invalid phone number, number cannot be greater than 10 digits" });
+}
+else {
+errorMessages.push({ element: "inptPhone", label: "spPhone", message: "Invalid phone number, number cannot be less than 10 digits" });
+}
+}
+if (errorMessages.length == 0) {
+document.getElementById("ExternalEstimateForm").submit();
+document.getElementById("spEmail").style.color = "white";
+document.getElementById("spName").style.color = "white";
+document.getElementById("spPhone").style.color = "white";
+document.getElementById("inptEmail").style.color = "black";
+document.getElementById("inptName").style.color = "black";
+document.getElementById("inptPhone").style.color = "black";
+}
+else {
+var div = document.createElement("div");
+div.setAttribute("id", "divMessages");
+var ul = document.createElement("ul");
+var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+div.style.width = w.toString() + "px";
+div.style.height= h.toString() + "px";
+div.style.background = "#A0A0A0";
+div.style.position = "fixed";
+div.style.top = "0px";
+div.style.left = "0px";
+div.style.opacity = ".7";
+ul.style.color = "red";
+ul.style.background = '#A0A0A0';
+ul.style.width = (w * .25).toString() + "px";
+ul.style.height = (h * .25).toString() + "px";
+ul.style.position = "relative";
+ul.style.top = ((h - (h * .25)) / 2).toString() + "px";
+ul.style.left = ((w - (w * .25)) / 2).toString() + "px";
+ul.style.liststyleType = "none";
+div.appendChild(ul);
+var li = document.createElement("li");
+errorMessages.forEach(function (message) {
+li = document.createElement("li");
+li.innerHTML = message.message;
+li.style.color = 'red';
+li.style.display = 'block';
+li.style.textAlign = 'left';
+li.style.fontFamily = "Arial, san-serif";
+ul.appendChild(li);
+document.getElementById(message.label).style.color = 'red';
+document.getElementById(message.element).style.color = 'red';
+});
+li = document.createElement("li");
+li.innerHTML = "CLICK ANYWHERE TO CLOSE";
+li.style.color = 'black';
+li.style.display = 'block';
+li.style.textAlign = 'left';
+li.style.fontFamily = "Arial, san-serif";
+li.style.fontWeight = "bold";
+ul.appendChild(li);
+div.addEventListener("click", function() {
+var d = document.getElementById("divMessages");
+document.body.removeChild(d);
+});
+document.body.appendChild(div);
+}
+}
+</script>
+</form>
+</body>
+</html>
